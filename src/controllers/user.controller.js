@@ -1,7 +1,4 @@
-import bcrypt from 'bcrypt';
 import { ApiError } from '../exceptions/api.error.js';
-import { jwtService } from '../services/jwt.service.js';
-import { tokenService } from '../services/token.service.js';
 import { userService } from '../services/user.service.js';
 import { emailService } from '../services/email.service.js';
 
