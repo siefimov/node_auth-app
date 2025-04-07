@@ -46,7 +46,7 @@ const activate = async (req, res) => {
   await user.save();
 
   await sendAuthentication(res, user);
-  res.redirect('/users/profile');
+  res.redirect('/user/profile');
 };
 
 const login = async (req, res) => {
@@ -74,7 +74,7 @@ const login = async (req, res) => {
   }
 
   await sendAuthentication(res, user);
-  res.redirect('/users/profile');
+  res.redirect('/user/profile');
 };
 
 const refresh = async (req, res, next) => {
