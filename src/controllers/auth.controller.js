@@ -78,10 +78,9 @@ const login = async (req, res) => {
 };
 
 const refresh = async (req, res, next) => {
-  const { refreshToken } = req.cookies;
-  const userData = jwtService.validateRefreshToken(refreshToken);
+  const user = req.user;
 
-  if (!userData) {
+  if (!user) {
     throw ApiError.Unauthorized();
   }
 
@@ -90,8 +89,6 @@ const refresh = async (req, res, next) => {
   if (!token) {
     throw ApiError.Unauthorized();
   }
-
-  const user = await userService.getByEmail(userData.email);
 
   await sendAuthentication(res, user);
 };
