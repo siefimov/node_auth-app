@@ -22,9 +22,9 @@ function getByToken(tokenValue, tokenType) {
   });
 }
 
-function remove(userId) {
+function remove(userId, tokenType) {
   return Token.destroy({
-    where: { userId },
+    where: { userId, type: tokenType },
   });
 }
 

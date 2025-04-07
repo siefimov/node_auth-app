@@ -165,10 +165,8 @@ const resetPassword = async (req, res) => {
 
   await userService.changePassword(userData.id, hashedPassword);
 
-  tokenData.resetPasswordToken = '';
-  await tokenData.save();
+  await tokenService.remove(user.id, 'resetPasswordToken');
 
-  await sendAuthentication(res, user);
   res.redirect('/login');
 };
 
@@ -177,7 +175,7 @@ async function sendAuthentication(res, user) {
   const accessToken = jwtService.generateAccessToken(userData);
   const refreshToken = jwtService.generateRefreshToken(userData);
 
-  await tokenService.save(user.id, refreshToken, 'refreshToken');
+  tokenService.save(user.id, refreshToken, 'refreshToken');
 
   res.cookie('refreshToken', refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
