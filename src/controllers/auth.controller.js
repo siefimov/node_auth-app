@@ -84,7 +84,10 @@ const refresh = async (req, res, next) => {
     throw ApiError.Unauthorized();
   }
 
-  const token = await tokenService.getByToken(refreshToken, 'refreshToken');
+  const token = await tokenService.getByToken(
+    req.cookies.refreshToken,
+    'refreshToken',
+  );
 
   if (!token) {
     throw ApiError.Unauthorized();
