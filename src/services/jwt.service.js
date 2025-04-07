@@ -10,7 +10,7 @@ function generateRefreshToken(user) {
 }
 
 function generateResetPasswordToken(user) {
-  return jwt.sign(user, process.env.JWT_RESET_SECET, { expiresIn: '10m' });
+  return jwt.sign(user, process.env.JWT_RESET_SECRET, { expiresIn: '10m' });
 }
 
 function validateAccessToken(token) {

@@ -144,10 +144,6 @@ const resetPassword = async (req, res) => {
     throw ApiError.BadRequest('Password and confirmation do not match');
   }
 
-  if (password !== confirmation) {
-    throw ApiError.BadRequest('Password and confirmation do not match');
-  }
-
   const tokenData = await tokenService.getByToken(
     resetPasswordToken,
     'resetPasswordToken',
@@ -169,7 +165,7 @@ const resetPassword = async (req, res) => {
 
   await userService.changePassword(userData.id, hashedPassword);
 
-  tokenData.resetPasswordToken = null;
+  tokenData.resetPasswordToken = '';
   await tokenData.save();
 
   await sendAuthentication(res, user);
@@ -196,8 +192,6 @@ async function sendAuthentication(res, user) {
     sameSite: 'none',
     secure: true,
   });
-
-  return { user: userData, refreshToken };
 }
 
 export const authController = {

@@ -1,13 +1,13 @@
 export const validateName = (value) => {
   if (!value) {
-    return 'Namw is required';
+    return 'Name is required';
   }
 
   const namePattern = /^[a-zA-Z\s]+$/;
 
   if (
     !namePattern.test(value) ||
-    value.trim().ength < 2 ||
+    value.trim().length < 2 ||
     value.trim().length > 50
   ) {
     return 'Name is not valid';

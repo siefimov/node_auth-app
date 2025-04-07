@@ -44,21 +44,23 @@ const updateUserName = async (userId, name) => {
   const user = await getById(userId);
 
   if (!user) {
-    return null;
+    throw ApiError.NotFound();
   }
 
   user.name = name;
   await user.save();
 
-  return user;
+  return normalize(user);
 };
 
-const changePassword = async (userId, hashedPassword) => {
+const changePassword = async (userId, newPassword) => {
   const user = await getById(userId);
 
   if (!user) {
     throw ApiError.NotFound('User not found');
   }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
 
   user.password = hashedPassword;
   await user.save();
@@ -67,7 +69,7 @@ const changePassword = async (userId, hashedPassword) => {
 };
 
 const changeEmail = async (userId, password, newEmail) => {
-  const user = await User.findByPk(userId);
+  const user = await getById(userId);
 
   if (!user) {
     throw ApiError.NotFound('User not found');

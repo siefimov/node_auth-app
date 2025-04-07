@@ -6,22 +6,7 @@ import { userService } from '../services/user.service.js';
 import { emailService } from '../services/email.service.js';
 
 const getUserProfile = async (req, res) => {
-  const { refreshToken } = req.cookies;
-  const userData = jwtService.validateRefreshToken(refreshToken);
-
-  if (!userData) {
-    throw ApiError.Unauthorized();
-  }
-
-  const token = await tokenService.getByToken(refreshToken, 'refreshToken');
-
-  if (!token) {
-    throw ApiError.Unauthorized();
-  }
-
-  const userId = token.userId;
-
-  const user = await userService.getById(userId);
+  const user = req.user;
 
   if (!user) {
     throw ApiError.NotFound();
@@ -34,7 +19,7 @@ const updateUserName = async (req, res) => {
   const { name } = req.body;
 
   if (!name || name.trim() === '') {
-    return res.status(400).json({ message: 'Name is required' });
+    throw ApiError.BadRequest('Name is required');
   }
 
   const userId = req.user.id;
@@ -61,9 +46,7 @@ const changePassword = async (req, res) => {
 
   const userId = req.user.id;
 
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-  await userService.changePassword(userId, hashedPassword);
+  await userService.changePassword(userId, newPassword);
 
   res.json({ message: 'Password updated successfully' });
 };
